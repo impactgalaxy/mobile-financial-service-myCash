@@ -79,7 +79,6 @@ export default function Home() {
             />
             <FormErrorMessage>
               {errors.PIN && errors.PIN.message}
-              {errMsg && <p className="text-sm font-bold">{errMsg}</p>}
             </FormErrorMessage>
           </FormControl>
           <Button
@@ -99,6 +98,7 @@ export default function Home() {
             </h1>
           </div>
         </form>
+        {errMsg && <p className="text-sm font-bold text-red-500">{errMsg}</p>}
       </div>
     </div>
   );
