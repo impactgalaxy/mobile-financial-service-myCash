@@ -6,6 +6,8 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./components/Home.jsx";
 import { ChakraProvider } from "@chakra-ui/react";
 import Register from "./components/Register.jsx";
+import ContextProvider from "./AuthProvider/ContextProvider.jsx";
+import Dashboard from "./components/dashboard/Dashboard.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -19,6 +21,10 @@ const router = createBrowserRouter([
         path: "/my-cash-register",
         element: <Register />,
       },
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
+      },
     ],
   },
 ]);
@@ -26,7 +32,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ChakraProvider>
-      <RouterProvider router={router} />
+      <ContextProvider>
+        <RouterProvider router={router} />
+      </ContextProvider>
     </ChakraProvider>
   </React.StrictMode>
 );

@@ -11,9 +11,11 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
+import { AuthContext } from "../AuthProvider/ContextProvider";
 export default function Register() {
+  const { createUser } = useContext(AuthContext);
   const [userType, setUserType] = useState("No");
   const {
     handleSubmit,
@@ -22,7 +24,15 @@ export default function Register() {
   } = useForm();
 
   async function onSubmit(values) {
-    values.userType = userType;
+    // values.userType = userType;
+    // const { email, PIN } = values;
+    // console.log(values, email, PIN);
+    // try {
+    //   const response = await createUser(email, PIN);
+    //   console.log(response.user);
+    // } catch (error) {
+    //   console.log(error);
+    // }
     try {
       const res = await axios.post(
         "http://localhost:5000/create-users",

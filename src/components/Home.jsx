@@ -7,19 +7,44 @@ import {
   FormLabel,
   Input,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import Dashboard from "./dashboard/Dashboard";
 
 export default function Home() {
+  const navigation = useNavigate();
+  const [errMsg, setErrMsg] = useState("");
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
   } = useForm();
 
-  function onSubmit(values) {
+  async function onSubmit(values) {
     const { numberOrEmail, PIN } = values;
-  }
+    console.log(numberOrEmail, PIN, values);
 
+    try {
+      const res = await axios.get(
+        `http://localhost:5000/my-data?pn=${numberOrEmail}&pin=${PIN}`,
+        values
+      );
+      console.log(res.data);
+      if (res.data._id) {
+        return navigation("/dashboard", { state: res.data });
+      } else {
+        return setErrMsg(res.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    // useEffect(() => {
+    //   getData();
+    // }, []);
+  }
+  console.log(errMsg);
   return (
     <div className="container md:w-1/2 mx-auto p-5">
       <img src={coin} className="size-12 m-auto block rounded-full"></img>
@@ -50,12 +75,11 @@ export default function Home() {
               placeholder="PIN"
               {...register("PIN", {
                 required: "PIN is required",
-                pattern: { value: /^[0-9]+$/, message: "Only number is valid" },
-                minLength: { value: 5, message: "PIN length should be 5" },
               })}
             />
             <FormErrorMessage>
               {errors.PIN && errors.PIN.message}
+              {errMsg && <p className="text-sm font-bold">{errMsg}</p>}
             </FormErrorMessage>
           </FormControl>
           <Button
